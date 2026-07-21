@@ -36,7 +36,7 @@ def load_data():
 @st.cache_resource
 def load_rf_model():
     # Assuming you still download it from Drive or load locally
-    return sio.load("rf_payoff_model.skops", trusted=True
+    return sio.load("rf_payoff_model.skops", trusted=True)
 
 @st.cache_resource
 def load_scaler():
