@@ -20,7 +20,7 @@ st.markdown(
 
 
 # --- LOAD ASSETS ---
-RF_MODEL_URL = "https://drive.google.com/uc?export=download&id=1Lm__L-l_bzs9ndYltFxlldxNyjGp0YU4"
+
 
 
 @st.cache_resource
