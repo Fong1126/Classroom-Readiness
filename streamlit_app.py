@@ -25,23 +25,23 @@ RF_MODEL_URL = "https://drive.google.com/uc?export=download&id=1Lm__L-l_bzs9ndYl
 
 @st.cache_resource
 def load_model():
-    # Loads local XGBoost pipeline
-    return sio.load("xgb_salary_model.skops", trusted=True)
+    # Inspect untrusted types first, then pass them as a trusted list
+    unknown_types = sio.get_untrusted_types(file="xgb_salary_model.skops")
+    return sio.load("xgb_salary_model.skops", trusted=unknown_types)
 
 @st.cache_data
 def load_data():
-    # Loads local data subset
     return pd.read_csv("streamlit_prog_data.csv")
 
 @st.cache_resource
 def load_rf_model():
-    # Assuming you still download it from Drive or load locally
-    return sio.load("rf_payoff_model.skops", trusted=True)
+    unknown_types = sio.get_untrusted_types(file="rf_payoff_model.skops")
+    return sio.load("rf_payoff_model.skops", trusted=unknown_types)
 
 @st.cache_resource
 def load_scaler():
-    # If you also export your scaler with skops
-    return sio.load("recommender_scaler.skops", trusted=True)
+    unknown_types = sio.get_untrusted_types(file="recommender_scaler.skops")
+    return sio.load("recommender_scaler.skops", trusted=unknown_types)
 
 # Initialize everything with the correct variable names
 xgb_model = load_model()
