@@ -1,8 +1,8 @@
+import os
 import pickle
-import numpy as np
+import urllib.request
 import pandas as pd
 import streamlit as st
-from sklearn.metrics.pairwise import cosine_similarity
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(
@@ -18,16 +18,28 @@ st.markdown(
 
 
 # --- LOAD ASSETS ---
+MODEL_URL = "https://drive.google.com/uc?export=download&id=1-8jZOw7Oue0S9YTikiBWzCvJlf0u06O2"
+DATA_URL = "https://drive.google.com/uc?export=download&id=1jK-BU8u3JhywC5lcLsgrw8objTwA1GI2"
+
+
 @st.cache_resource
-def load_assets():
-  prog_df = pd.read_csv("streamlit_prog_data.csv")
-  rf_model = pickle.load(open("rf_payoff_model.pkl", "rb"))
-  xgb_model = pickle.load(open("xgb_salary_model.pkl", "rb"))
-  scaler = pickle.load(open("recommender_scaler.pkl", "rb"))
-  return prog_df, rf_model, xgb_model, scaler
+def load_model():
+    model_path = "xgb_salary_model.pkl"
+    if not os.path.exists(model_path):
+        urllib.request.urlretrieve(MODEL_URL, model_path)
+    with open(model_path, "rb") as f:
+        return pickle.load(f)
+
+@st.cache_data
+def load_data():
+    data_path = "streamlit_prog_data.csv"
+    if not os.path.exists(data_path):
+        urllib.request.urlretrieve(DATA_URL, data_path)
+    return pd.read_csv(data_path)
 
 
-prog_df, rf_model, xgb_model, scaler = load_assets()
+model = load_model()
+df = load_data()
 
 # --- SIDEBAR INPUTS ---
 st.sidebar.header("🎯 Your Target Profile & Constraints")
