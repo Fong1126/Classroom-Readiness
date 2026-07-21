@@ -20,7 +20,8 @@ st.markdown(
 
 
 # --- LOAD ASSETS ---
-RF_MODEL_URL = "https://drive.google.com/uc?export=download&id=1jK-BU8u3JhywC5lcLsgrw8objTwA1GI2"
+RF_MODEL_URL = "https://drive.google.com/uc?export=download&id=1Lm__L-l_bzs9ndYltFxlldxNyjGp0YU4"
+
 
 @st.cache_resource
 def load_model():
