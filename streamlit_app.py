@@ -20,28 +20,39 @@ st.markdown(
 
 
 # --- LOAD ASSETS ---
-MODEL_URL = "https://drive.google.com/uc?export=download&id=1-8jZOw7Oue0S9YTikiBWzCvJlf0u06O2"
-DATA_URL = "https://drive.google.com/uc?export=download&id=1jK-BU8u3JhywC5lcLsgrw8objTwA1GI2"
-
+RF_MODEL_URL = "https://drive.google.com/uc?export=download&id=1jK-BU8u3JhywC5lcLsgrw8objTwA1GI2"
 
 @st.cache_resource
 def load_model():
-    model_path = "xgb_salary_model.pkl"
-    if not os.path.exists(model_path):
-        urllib.request.urlretrieve(MODEL_URL, model_path)
-    with open(model_path, "rb") as f:
+    # Loads local XGBoost model
+    with open("xgb_salary_model.pkl", "rb") as f:
         return pickle.load(f)
 
 @st.cache_data
 def load_data():
-    data_path = "streamlit_prog_data.csv"
-    if not os.path.exists(data_path):
-        urllib.request.urlretrieve(DATA_URL, data_path)
-    return pd.read_csv(data_path)
+    # Loads local data subset
+    return pd.read_csv("streamlit_prog_data.csv")
 
+@st.cache_resource
+def load_rf_model():
+    # Downloads and loads Random Forest model from Google Drive
+    rf_path = "rf_salary_model.pkl"
+    if not os.path.exists(rf_path):
+        urllib.request.urlretrieve(RF_MODEL_URL, rf_path)
+    with open(rf_path, "rb") as f:
+        return pickle.load(f)
 
-model = load_model()
-df = load_data()
+@st.cache_resource
+def load_scaler():
+    # Loads local scaler
+    with open("scaler.pkl", "rb") as f:
+        return pickle.load(f)
+
+# Initialize everything with the correct variable names
+xgb_model = load_model()
+prog_df = load_data()
+rf_model = load_rf_model()
+scaler = load_scaler()
 
 # --- SIDEBAR INPUTS ---
 st.sidebar.header("🎯 Your Target Profile & Constraints")
