@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import os
-import pickle
+import skops.io as sio
 import urllib.request
 import pandas as pd
 import streamlit as st
@@ -24,9 +24,8 @@ RF_MODEL_URL = "https://drive.google.com/uc?export=download&id=1jK-BU8u3JhywC5lc
 
 @st.cache_resource
 def load_model():
-    # Loads local XGBoost model
-    with open("xgb_salary_model.pkl", "rb") as f:
-        return pickle.load(f)
+    # Loads local XGBoost pipeline
+    return sio.load("xgb_salary_model.skops", trusted=True)
 
 @st.cache_data
 def load_data():
@@ -35,18 +34,13 @@ def load_data():
 
 @st.cache_resource
 def load_rf_model():
-    # Downloads and loads Random Forest model from Google Drive
-    rf_path = "rf_salary_model.pkl"
-    if not os.path.exists(rf_path):
-        urllib.request.urlretrieve(RF_MODEL_URL, rf_path)
-    with open(rf_path, "rb") as f:
-        return pickle.load(f)
+    # Assuming you still download it from Drive or load locally
+    return sio.load("rf_payoff_model.skops", trusted=True
 
 @st.cache_resource
 def load_scaler():
-    # Loads local scaler
-    with open("scaler.pkl", "rb") as f:
-        return pickle.load(f)
+    # If you also export your scaler with skops
+    return sio.load("recommender_scaler.skops", trusted=True)
 
 # Initialize everything with the correct variable names
 xgb_model = load_model()
